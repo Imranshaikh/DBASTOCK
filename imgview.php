@@ -20,9 +20,7 @@
     $datecond =  "AND `vouchdt` <= $asondate";
   }
 
-  $get = mysql_query("SELECT `source`,`vouchdt`, `itemcode`, `itemname`, `color`, `itemgrp`, `s5`, `s6`, `s7`,`s8`, `s9`, `s10`, `s11`, `s12`, `soth`, `qty`, `mrp`, `rate`  FROM `trans` WHERE $groupcond $datecond GROUP BY itemname ") or die(mysql_error());
-
-  $getno = mysql_num_rows($get);
+  $get = mysql_query("SELECT `source`,`vouchdt`, `itemcode`, `itemname`, `color`, `itemgrp`, `s5`, `s6`, `s7`,`s8`, `s9`, `s10`, `s11`, `s12`, `soth`, `qty`, `mrp`, `rate`  FROM `transacn` WHERE $groupcond $datecond GROUP BY itemname ") or die(mysql_error());
 
 
 ?>
