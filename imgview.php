@@ -20,9 +20,6 @@
     $datecond =  "AND `vouchdt` <= $asondate";
   }
 
-  $get = mysql_query("SELECT `source`,`vouchdt`, `itemcode`, `itemname`, `color`, `itemgrp`, `s5`, `s6`, `s7`,`s8`, `s9`, `s10`, `s11`, `s12`, `soth`, `qty`, `mrp`, `rate`  FROM `transacn` WHERE $groupcond $datecond GROUP BY itemname ") or die(mysql_error());
-
-
 ?>
 
 <html>
@@ -39,109 +36,117 @@
     <div class="container">
       <div class="row">
         <div class="col-md-offset-3 col-md-6 col-md-offset-3">
-          <form role="form" name="imageview" method="GET" action="imgview.php">
-            <div>
-              <img src="upload/default.jpg" class="img-responsive">
-            </div>
-            <table class="table table-bordered">
-              <tr>
-                <td>
-                  <label>Name</label>
-                </td>
-                <td>
-                  <?php echo "RCF211-1895"; ?>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <label>Colour</label>
-                </td>
-                <td>
-                  <?php echo "B.TAN"; ?>
-                </td>
-              </tr>
-            </table>
-            <table class="table table-bordered">
-              <tr>
-                <td>
-                  <label>5</label>
-                </td>
-                <td>
-                  <label>6</label>
-                </td>
-                <td>
-                  <label>7</label>
-                </td>
-                <td>
-                  <label>8</label>
-                </td>
-                <td>
-                  <label>9</label>
-                </td>
-                <td>
-                  <label>10</label>
-                </td>
-                <td>
-                  <label>11</label>
-                </td>
-                <td>
-                  <label>12</label>
-                </td>
-                <td>
-                  <label>Other</label>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <?php echo "2"; ?>
-                </td>
-                <td>
-                  <?php echo "1"; ?>
-                </td>
-                <td>
-                  <?php echo "0"; ?>
-                </td>
-                <td>
-                  <?php echo "0"; ?>
-                </td>
-                <td>
-                  <?php echo "1"; ?>
-                </td>
-                <td>
-                  <?php echo "5"; ?>
-                </td>
-                <td>
-                  <?php echo "4"; ?>
-                </td>
-                <td>
-                  <?php echo "6"; ?>
-                </td>
-                <td>
-                  <?php echo "2"; ?>
-                </td>
-              </tr>
+          <div>
+            <img src="upload/default.jpg" class="img-responsive">
+          </div>
+          <?php
+            $itemqry = mysql_query("SELECT * FROM `item`") or die(mysql_error());
+            $allitems = array();
+            $allcolor = array();
+            while ($itemresult = mysql_fetch_assoc($itemqry)) {
+              $allitems = $itemresult;
+              $itemname = $allitems['name'];
+              $colorqry = mysql_query("SELECT * FROM `color`") or die(mysql_error());
+              while ($colresult = mysql_fetch_assoc($colorqry)) {
+                $colorname = $colresult['name'];
+                $colorcode = $colresult['code'];
+                $sizeqry = mysql_query("SELECT `source`,`vouchdt`, `itemcode`, `itemname`, `color`, `itemgrp`, SUM(s5), SUM(s6), SUM(s7), SUM(s8), SUM(s9), SUM(s10), SUM(s11), SUM(s12), SUM(soth), `qty`, `mrp`, `rate`  FROM `transacn` WHERE `itemname` = '$itemname' AND `color` = '$colorcode' $groupcond $datecond GROUP BY itemname ") or die(mysql_error());
+                while ($result = mysql_fetch_assoc($sizeqry)) {
+                  echo "<p>";
+                  var_dump($result);
+                }
+              }
+            }
 
-            </table>
-            <table class="table table-bordered">
-              <tr>
-                <td>
-                  <label>Cost</label>
-                </td>
-                <td>
-                  <?php echo "250"; ?>
-                </td>
-                <td>
-                  <label>MRP</label>
-                </td>
-                <td>
-                  <?php echo "300"; ?>
-                </td>
-              </tr>
-            </table>
-          </form>
+          ?>
+           <tr>
+              <td>
+                <label>Colour</label>
+              </td>
+              <td>
+                <?php echo "B.TAN"; ?>
+              </td>
+            </tr>
+          </table>
+          <table class="table table-bordered">
+            <tr>
+              <td>
+                <label>5</label>
+              </td>
+              <td>
+                <label>6</label>
+              </td>
+              <td>
+                <label>7</label>
+              </td>
+              <td>
+                <label>8</label>
+              </td>
+              <td>
+                <label>9</label>
+              </td>
+              <td>
+                <label>10</label>
+              </td>
+              <td>
+                <label>11</label>
+              </td>
+              <td>
+                <label>12</label>
+              </td>
+              <td>
+                <label>Other</label>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <?php echo "2"; ?>
+              </td>
+              <td>
+                <?php echo "1"; ?>
+              </td>
+              <td>
+                <?php echo "0"; ?>
+              </td>
+              <td>
+                <?php echo "0"; ?>
+              </td>
+              <td>
+                <?php echo "1"; ?>
+              </td>
+              <td>
+                <?php echo "5"; ?>
+              </td>
+              <td>
+                <?php echo "4"; ?>
+              </td>
+              <td>
+                <?php echo "6"; ?>
+              </td>
+              <td>
+                <?php echo "2"; ?>
+              </td>
+            </tr>
+
+          </table>
+          <table class="table table-bordered">
+            <tr>
+              <td>
+                <label>Cost</label>
+              </td>
+              <td>
+                <?php echo "250"; ?>
+              </td>
+              <td>
+                <label>MRP</label>
+              </td>
+              <td>
+                <?php echo "300"; ?>
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
-
     </div>
   </body>
 
